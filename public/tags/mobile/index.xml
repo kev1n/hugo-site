@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mobile on Kevin Wang - Software Engineer</title>
+    <link>http://localhost:1313/tags/mobile/</link>
+    <description>Recent content in Mobile on Kevin Wang - Software Engineer</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/mobile/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>React Performance Optimization: Lessons from Building CampusNav</title>
+      <link>http://localhost:1313/posts/react-performance-optimization/</link>
+      <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/react-performance-optimization/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;react-performance-optimization-lessons-from-building-campusnav&#34;&gt;&#xA;  React Performance Optimization: Lessons from Building CampusNav&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#react-performance-optimization-lessons-from-building-campusnav&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;While building CampusNav, our university navigation app that reached 2,000+ downloads in its first month, we faced significant performance challenges. The app needed to handle real-time location updates, complex map rendering, and large datasets of building information - all while maintaining smooth 60fps animations on mobile devices.&lt;/p&gt;&#xA;&lt;p&gt;Here are the key optimization strategies that transformed our app from sluggish to snappy.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,7 +1,88 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Kevin Wang'
 theme = 'typo'
+
+# Google analytics code
+googleAnalytics = "G-xxxxxxxxx"
+
+[taxonomies]
+tag = 'tags'
+
+[params]
+# Meta description
+description = "Kevin Wang - Computer Science Student & Software Engineer at Northwestern University"
+
+# Appearance settings
+theme = 'auto'
+colorPalette = 'custom-resume'
+hideHeader = false
+
+# Custom CSS files
+customCSS = ["css/colors/custom-resume.css", "css/resume-custom.css"]
+
+# Intro on main page, content is markdown
+
+# Collection to display on home
+homeCollectionTitle = 'Recent Projects & Posts'
+homeCollection = 'posts'
+
+# Lists parameters
+paginationSize = 100
+listSummaries = true
+listDateFormat = '2 Jan 2006'
+
+# Breadcrumbs
+[params.breadcrumbs]
+enabled = true
+showCurrentPage = true
+home = "Home"
+
+# Social icons
+[[params.social]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/kevin-wang-08836a175/"
+
+[[params.social]]
+name = "github"
+url = "https://github.com/kev1n"
+
+[[params.social]]
+name = "email"
+url = "mailto:kevinwang2027@u.northwestern.edu"
+
+# Main menu pages
+[[params.menu]]
+name = "home"
+url = "/"
+
+[[params.menu]]
+name = "experience"
+url = "/experience"
+
+[[params.menu]]
+name = "posts"
+url = "/posts"
+
+# Syntax highlight on code blocks
+[markup]
+[markup.highlight]
+style = 'algol'
+
+# Allow raw HTML in markdown
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+
+# Giscus comments
+[params.giscus]
+enable = false
+repo = "user/repo"
+repoid = "repoId"
+category = "General"
+categoryid = "categoryId"
+mapping = "pathname"
+theme = "preferred_color_scheme"
 
 [caches]
   [caches.images]

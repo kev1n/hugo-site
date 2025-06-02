@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OpenAI on Kevin Wang - Software Engineer</title>
+    <link>http://localhost:1313/tags/openai/</link>
+    <description>Recent content in OpenAI on Kevin Wang - Software Engineer</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 15 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/openai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building Intuitive AI Interfaces: Lessons from StudyBuddy AI</title>
+      <link>http://localhost:1313/posts/building-ai-interfaces/</link>
+      <pubDate>Fri, 15 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/building-ai-interfaces/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;building-intuitive-ai-interfaces-lessons-from-studybuddy-ai&#34;&gt;&#xA;  Building Intuitive AI Interfaces: Lessons from StudyBuddy AI&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#building-intuitive-ai-interfaces-lessons-from-studybuddy-ai&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;Creating intuitive interfaces for AI-powered applications presents unique challenges that go beyond traditional UI/UX design. After building StudyBuddy AI, our award-winning study companion that won first place at WildHacks 2024, I&amp;rsquo;ve learned valuable lessons about making AI feel natural and helpful rather than overwhelming or unpredictable.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;the-challenge-of-ai-interface-design&#34;&gt;&#xA;  The Challenge of AI Interface Design&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#the-challenge-of-ai-interface-design&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;When users interact with traditional software, they have clear expectations about input and output. Click a button, get a response. Fill out a form, submit data. But AI interfaces introduce uncertainty and variability that can be both powerful and confusing.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>React on Kevin Wang - Software Engineer</title>
+    <link>http://localhost:1313/tags/react/</link>
+    <description>Recent content in React on Kevin Wang - Software Engineer</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 15 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building Intuitive AI Interfaces: Lessons from StudyBuddy AI</title>
+      <link>http://localhost:1313/posts/building-ai-interfaces/</link>
+      <pubDate>Fri, 15 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/building-ai-interfaces/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;building-intuitive-ai-interfaces-lessons-from-studybuddy-ai&#34;&gt;&#xA;  Building Intuitive AI Interfaces: Lessons from StudyBuddy AI&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#building-intuitive-ai-interfaces-lessons-from-studybuddy-ai&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;Creating intuitive interfaces for AI-powered applications presents unique challenges that go beyond traditional UI/UX design. After building StudyBuddy AI, our award-winning study companion that won first place at WildHacks 2024, I&amp;rsquo;ve learned valuable lessons about making AI feel natural and helpful rather than overwhelming or unpredictable.&lt;/p&gt;&#xA;&lt;h2 class=&#34;heading&#34; id=&#34;the-challenge-of-ai-interface-design&#34;&gt;&#xA;  The Challenge of AI Interface Design&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#the-challenge-of-ai-interface-design&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;When users interact with traditional software, they have clear expectations about input and output. Click a button, get a response. Fill out a form, submit data. But AI interfaces introduce uncertainty and variability that can be both powerful and confusing.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>React Performance Optimization: Lessons from Building CampusNav</title>
+      <link>http://localhost:1313/posts/react-performance-optimization/</link>
+      <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/react-performance-optimization/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;react-performance-optimization-lessons-from-building-campusnav&#34;&gt;&#xA;  React Performance Optimization: Lessons from Building CampusNav&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#react-performance-optimization-lessons-from-building-campusnav&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;While building CampusNav, our university navigation app that reached 2,000+ downloads in its first month, we faced significant performance challenges. The app needed to handle real-time location updates, complex map rendering, and large datasets of building information - all while maintaining smooth 60fps animations on mobile devices.&lt;/p&gt;&#xA;&lt;p&gt;Here are the key optimization strategies that transformed our app from sluggish to snappy.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

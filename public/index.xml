@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Home on My New Hugo Site</title>
+    <title>Kevin Wang</title>
     <link>http://localhost:1313/</link>
-    <description>Recent content in Home on My New Hugo Site</description>
+    <description>Recent content on Kevin Wang</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <lastBuildDate>Mon, 02 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project Management as a Software Engineer</title>
+      <link>http://localhost:1313/posts/building-ai-interfaces/</link>
+      <pubDate>Mon, 02 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/building-ai-interfaces/</guid>
+      <description>&lt;h1 class=&#34;heading&#34; id=&#34;disc-project-management&#34;&gt;&#xA;  DISC Project Management&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#disc-project-management&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;At the start of Winter Quarter, I was handed an unexpected bone. While I applied to Develop and Innovate for Social Change as a Software Engineer, the email was clear: I had two days to accept the role of Project Manager for a local non-profit - the Clark Street Beach Bird Sanctuary (CSBBS). Naturally, I accepted.&lt;/p&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;the-challenge&#34;&gt;&#xA;  The Challenge&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#the-challenge&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been a project manager before, but only in small group settings with low stakes: group projects. This was entirely a new beast - talking to clients while simulatenously managing a team of backend and frontend software engineers, UI/UX designers. I didn&amp;rsquo;t have a clue.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Experience</title>
+      <link>http://localhost:1313/experience/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/experience/</guid>
+      <description>&lt;h3 class=&#34;heading&#34; id=&#34;northwestern-university-ccl-lab&#34;&gt;&#xA;  Northwestern University CCL Lab&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#northwestern-university-ccl-lab&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;Undergraduate Researcher&lt;/strong&gt; | &lt;em&gt;Feb 2025 - Present&lt;/em&gt; | Evanston, IL&lt;/p&gt;&#xA;&lt;p&gt;Collecting a large corpus dataset of Netlogo-Pseudocode pairs for fine-tuning LLMs on pseudocode-to-Netlogo translations. Working toward publishing a paper.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Developing machine learning pipelines for computational modeling translation&lt;/li&gt;&#xA;&lt;li&gt;Building datasets for training language models on domain-specific code&lt;/li&gt;&#xA;&lt;li&gt;Collaborating with faculty on research publication for academic conferences&lt;/li&gt;&#xA;&lt;li&gt;Contributing to open-source tools for computational biology education&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 class=&#34;heading&#34; id=&#34;hotelsallowcom&#34;&gt;&#xA;  hotelsallow.com&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#hotelsallowcom&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;Founder&lt;/strong&gt; | &lt;em&gt;Oct 2024 - Present&lt;/em&gt; | Remote&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

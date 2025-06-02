@@ -1,0 +1,265 @@
+/* Resume-specific styling enhancements */
+.resume-section {
+  background: var(--background-secondary);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px var(--shadow);
+  border: 1px solid var(--border-light);
+}
+
+.resume-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(
+    135deg,
+    var(--content-accent),
+    var(--content-secondary)
+  );
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px var(--shadow);
+}
+
+.resume-header h1 {
+  color: white;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.resume-header .subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.contact-item {
+  color: white;
+  text-decoration: none;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.contact-item:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.skill-category {
+  background: var(--background);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--content-accent);
+}
+
+.skill-category h4 {
+  color: var(--content-accent);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background: var(--hover-bg);
+  color: var(--content-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  border: 1px solid var(--border-light);
+}
+
+.experience-item {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--background);
+  border-radius: 8px;
+  border-left: 4px solid var(--content-secondary);
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.job-title {
+  color: var(--content-accent);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.company {
+  color: var(--content-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.date-range {
+  color: var(--content-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.experience-description {
+  color: var(--content-primary);
+  line-height: 1.6;
+}
+
+.experience-description ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.experience-description li {
+  margin-bottom: 0.5rem;
+}
+
+.project-card {
+  background: var(--background);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-light);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--shadow);
+}
+
+.project-title {
+  color: var(--content-accent);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.tech-tag {
+  background: var(--content-secondary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.education-item {
+  background: var(--background);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--content-muted);
+}
+
+.degree {
+  color: var(--content-accent);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.school {
+  color: var(--content-secondary);
+  font-size: 1.1rem;
+  margin: 0.25rem 0;
+}
+
+.gpa {
+  color: var(--content-muted);
+  font-size: 0.9rem;
+}
+
+.profile-image-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--content-accent),
+    var(--content-secondary)
+  );
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.achievements-list {
+  list-style: none;
+  padding: 0;
+}
+
+.achievements-list li {
+  background: var(--background);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--content-accent);
+  position: relative;
+}
+
+.achievements-list li::before {
+  content: "🏆";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--background-secondary);
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .resume-header h1 {
+    font-size: 2rem;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .experience-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}

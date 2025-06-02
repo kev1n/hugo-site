@@ -1,0 +1,37 @@
+:root {
+  --content-primary: #272932; /* Raisin black for primary text */
+  --content-secondary: #0f7173; /* Caribbean Current for secondary text */
+  --content-accent: #f05d5e; /* Bittersweet for accents and highlights */
+  --content-muted: #d8a47f; /* Buff for muted text */
+  --background: #e7ecef; /* Anti-flash white for background */
+  --background-secondary: #ffffff; /* Pure white for cards/sections */
+  --code-background: rgba(
+    15,
+    113,
+    115,
+    0.1
+  ); /* Light teal background for code */
+  --code-border: #0f7173; /* Caribbean Current for borders */
+  --border-light: rgba(39, 41, 50, 0.1); /* Light border */
+  --shadow: rgba(39, 41, 50, 0.1); /* Subtle shadow */
+  --hover-bg: rgba(240, 93, 94, 0.1); /* Light accent hover */
+}
+
+.dark {
+  --content-primary: #e7ecef; /* Anti-flash white for primary text in dark mode */
+  --content-secondary: #d8a47f; /* Buff for secondary text */
+  --content-accent: #f05d5e; /* Bittersweet accent remains the same */
+  --content-muted: #0f7173; /* Caribbean Current for muted text */
+  --background: #272932; /* Raisin black for background */
+  --background-secondary: #1a1c23; /* Darker variant for cards */
+  --code-background: rgba(
+    240,
+    93,
+    94,
+    0.1
+  ); /* Light accent background for code */
+  --code-border: #f05d5e; /* Bittersweet for borders */
+  --border-light: rgba(231, 236, 239, 0.2); /* Light border for dark mode */
+  --shadow: rgba(0, 0, 0, 0.3); /* Stronger shadow for dark mode */
+  --hover-bg: rgba(15, 113, 115, 0.2); /* Teal hover for dark mode */
+}

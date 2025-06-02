@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content="Practical strategies for optimizing React applications, with real-world examples from a mobile navigation app"/>
+
+
+
+<title>
+    
+    React Performance Optimization: Lessons from Building CampusNav | Kevin Wang - Software Engineer
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/react-performance-optimization/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/react-performance-optimization/">
+  <meta property="og:site_name" content="Kevin Wang - Software Engineer">
+  <meta property="og:title" content="React Performance Optimization: Lessons from Building CampusNav">
+  <meta property="og:description" content="Practical strategies for optimizing React applications, with real-world examples from a mobile navigation app">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-10-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-10-28T00:00:00+00:00">
+    <meta property="article:tag" content="React">
+    <meta property="article:tag" content="Performance">
+    <meta property="article:tag" content="Mobile">
+    <meta property="article:tag" content="Optimization">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.013cd92b75b2a5b0d61291142812628ab45e7caea8077e22777623ad80f0862c.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Kevin Wang - Software Engineer</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/experience" >
+                /experience
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/react-performance-optimization/">React Performance Optimization: Lessons from Building CampusNav</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">React Performance Optimization: Lessons from Building CampusNav</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2024-10-28T00:00:00&#43;00:00">October 28, 2024</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <h1 class="heading" id="react-performance-optimization-lessons-from-building-campusnav">
+  React Performance Optimization: Lessons from Building CampusNav
+  <a class="anchor" href="#react-performance-optimization-lessons-from-building-campusnav">#</a>
+</h1>
+<p>While building CampusNav, our university navigation app that reached 2,000+ downloads in its first month, we faced significant performance challenges. The app needed to handle real-time location updates, complex map rendering, and large datasets of building information - all while maintaining smooth 60fps animations on mobile devices.</p>
+<p>Here are the key optimization strategies that transformed our app from sluggish to snappy.</p>
+<h2 class="heading" id="the-performance-problem">
+  The Performance Problem
+  <a class="anchor" href="#the-performance-problem">#</a>
+</h2>
+<p>Our initial implementation suffered from several critical issues:</p>
+<ul>
+<li><strong>Janky scrolling</strong> when browsing building lists (dropping to 20-30fps)</li>
+<li><strong>Slow map updates</strong> taking 2-3 seconds to render new data</li>
+<li><strong>Memory leaks</strong> causing crashes after 10-15 minutes of usage</li>
+<li><strong>Large bundle size</strong> resulting in 8+ second initial load times</li>
+</ul>
+<h2 class="heading" id="1-optimizing-re-renders-with-reactmemo-and-usememo">
+  1. Optimizing Re-renders with React.memo and useMemo
+  <a class="anchor" href="#1-optimizing-re-renders-with-reactmemo-and-usememo">#</a>
+</h2>
+<h3 class="heading" id="the-problem-unnecessary-component-re-renders">
+  The Problem: Unnecessary Component Re-renders
+  <a class="anchor" href="#the-problem-unnecessary-component-re-renders">#</a>
+</h3>
+<p>Our building list component was re-rendering every time the user&rsquo;s location updated, even when the visible buildings hadn&rsquo;t changed:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// Before: Every location update caused all buildings to re-render
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> BuildingList({ buildings, userLocation }) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;div className=<span style="color:#666;font-style:italic">&#34;building-list&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      {buildings.map((building) =&gt; (
+</span></span><span style="display:flex;"><span>        &lt;BuildingCard
+</span></span><span style="display:flex;"><span>          key={building.id}
+</span></span><span style="display:flex;"><span>          building={building}
+</span></span><span style="display:flex;"><span>          distance={calculateDistance(building.location, userLocation)}
+</span></span><span style="display:flex;"><span>          userLocation={userLocation}
+</span></span><span style="display:flex;"><span>        /&gt;
+</span></span><span style="display:flex;"><span>      ))}
+</span></span><span style="display:flex;"><span>    &lt;/div&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 class="heading" id="the-solution-strategic-memoization">
+  The Solution: Strategic Memoization
+  <a class="anchor" href="#the-solution-strategic-memoization">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// After: Optimized with React.memo and useMemo
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;text-decoration:underline">const</span> BuildingCard = React.memo(
+</span></span><span style="display:flex;"><span>  ({ building, distance, isVisible }) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>      &lt;div className=<span style="color:#666;font-style:italic">&#34;building-card&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;h3&gt;{building.name}&lt;/h3&gt;
+</span></span><span style="display:flex;"><span>        &lt;p&gt;{distance}m away&lt;/p&gt;
+</span></span><span style="display:flex;"><span>        &lt;p&gt;{building.description}&lt;/p&gt;
+</span></span><span style="display:flex;"><span>      &lt;/div&gt;
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  (prevProps, nextProps) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Custom comparison to prevent unnecessary re-renders
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>      prevProps.building.id === nextProps.building.id &amp;&amp;
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold;font-style:italic">Math</span>.abs(prevProps.distance - nextProps.distance) &lt; 10 <span style="color:#888;font-style:italic">// Only re-render if distance changed significantly
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    );
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> BuildingList({ buildings, userLocation }) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> visibleBuildings = useMemo(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">return</span> buildings.filter(
+</span></span><span style="display:flex;"><span>      (building) =&gt; calculateDistance(building.location, userLocation) &lt; 500
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>  }, [buildings, userLocation.lat, userLocation.lng]); <span style="color:#888;font-style:italic">// Only recalculate when position changes meaningfully
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;div className=<span style="color:#666;font-style:italic">&#34;building-list&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      {visibleBuildings.map((building) =&gt; (
+</span></span><span style="display:flex;"><span>        &lt;BuildingCard
+</span></span><span style="display:flex;"><span>          key={building.id}
+</span></span><span style="display:flex;"><span>          building={building}
+</span></span><span style="display:flex;"><span>          distance={calculateDistance(building.location, userLocation)}
+</span></span><span style="display:flex;"><span>        /&gt;
+</span></span><span style="display:flex;"><span>      ))}
+</span></span><span style="display:flex;"><span>    &lt;/div&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Result</strong>: Reduced re-renders by 80% and improved scroll performance from 25fps to 58fps.</p>
+<h2 class="heading" id="2-virtualization-for-large-lists">
+  2. Virtualization for Large Lists
+  <a class="anchor" href="#2-virtualization-for-large-lists">#</a>
+</h2>
+<h3 class="heading" id="the-problem-rendering-500-buildings">
+  The Problem: Rendering 500+ Buildings
+  <a class="anchor" href="#the-problem-rendering-500-buildings">#</a>
+</h3>
+<p>Northwestern&rsquo;s campus has hundreds of buildings, and rendering all of them at once caused severe performance issues.</p>
+<h3 class="heading" id="the-solution-react-window">
+  The Solution: React-Window
+  <a class="anchor" href="#the-solution-react-window">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">import</span> { FixedSizeList as List } from <span style="color:#666;font-style:italic">&#34;react-window&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> VirtualizedBuildingList({ buildings, userLocation }) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> itemHeight = 120;
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> containerHeight = 600;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> Row = useCallback(
+</span></span><span style="display:flex;"><span>    ({ index, style }) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold;text-decoration:underline">const</span> building = buildings[index];
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>        &lt;div style={style}&gt;
+</span></span><span style="display:flex;"><span>          &lt;BuildingCard building={building} userLocation={userLocation} /&gt;
+</span></span><span style="display:flex;"><span>        &lt;/div&gt;
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    [buildings, userLocation]
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;List
+</span></span><span style="display:flex;"><span>      height={containerHeight}
+</span></span><span style="display:flex;"><span>      itemCount={buildings.length}
+</span></span><span style="display:flex;"><span>      itemSize={itemHeight}
+</span></span><span style="display:flex;"><span>      overscanCount={5} <span style="">//</span> Render 5 extra items outside viewport
+</span></span><span style="display:flex;"><span>    &gt;
+</span></span><span style="display:flex;"><span>      {Row}
+</span></span><span style="display:flex;"><span>    &lt;/List&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Result</strong>: Memory usage decreased by 75% and eliminated lag when scrolling through large building lists.</p>
+<h2 class="heading" id="3-optimizing-map-rendering-with-debouncing">
+  3. Optimizing Map Rendering with Debouncing
+  <a class="anchor" href="#3-optimizing-map-rendering-with-debouncing">#</a>
+</h2>
+<h3 class="heading" id="the-problem-expensive-map-updates">
+  The Problem: Expensive Map Updates
+  <a class="anchor" href="#the-problem-expensive-map-updates">#</a>
+</h3>
+<p>Every GPS update triggered expensive map re-renders and API calls to fetch nearby buildings:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// Before: Triggered on every GPS update (multiple times per second)
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>  fetchNearbyBuildings(userLocation);
+</span></span><span style="display:flex;"><span>  updateMapCenter(userLocation);
+</span></span><span style="display:flex;"><span>}, [userLocation]);
+</span></span></code></pre></div><h3 class="heading" id="the-solution-custom-debouncing-hook">
+  The Solution: Custom Debouncing Hook
+  <a class="anchor" href="#the-solution-custom-debouncing-hook">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> useDebounce(value, delay) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> [debouncedValue, setDebouncedValue] = useState(value);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">const</span> handler = setTimeout(() =&gt; {
+</span></span><span style="display:flex;"><span>      setDebouncedValue(value);
+</span></span><span style="display:flex;"><span>    }, delay);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">return</span> () =&gt; {
+</span></span><span style="display:flex;"><span>      clearTimeout(handler);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  }, [value, delay]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> debouncedValue;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// Usage in component
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> MapComponent({ userLocation }) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> debouncedLocation = useDebounce(userLocation, 1000); <span style="color:#888;font-style:italic">// Wait 1 second before updating
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    fetchNearbyBuildings(debouncedLocation);
+</span></span><span style="display:flex;"><span>    updateMapCenter(debouncedLocation);
+</span></span><span style="display:flex;"><span>  }, [debouncedLocation]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#888;font-style:italic">// Still update user marker immediately for smooth UX
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    updateUserMarker(userLocation);
+</span></span><span style="display:flex;"><span>  }, [userLocation]);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Result</strong>: Reduced API calls from 60+ per minute to 3-5 per minute, while maintaining responsive user experience.</p>
+<h2 class="heading" id="4-code-splitting-and-lazy-loading">
+  4. Code Splitting and Lazy Loading
+  <a class="anchor" href="#4-code-splitting-and-lazy-loading">#</a>
+</h2>
+<h3 class="heading" id="the-problem-large-initial-bundle">
+  The Problem: Large Initial Bundle
+  <a class="anchor" href="#the-problem-large-initial-bundle">#</a>
+</h3>
+<p>Our initial bundle was 1.2MB, causing slow load times on mobile networks.</p>
+<h3 class="heading" id="the-solution-route-based-code-splitting">
+  The Solution: Route-based Code Splitting
+  <a class="anchor" href="#the-solution-route-based-code-splitting">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">import</span> { lazy, Suspense } from <span style="color:#666;font-style:italic">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// Lazy load route components
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;text-decoration:underline">const</span> MapView = lazy(() =&gt; <span style="font-weight:bold;text-decoration:underline">import</span>(<span style="color:#666;font-style:italic">&#34;./components/MapView&#34;</span>));
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">const</span> BuildingDetails = lazy(() =&gt; <span style="font-weight:bold;text-decoration:underline">import</span>(<span style="color:#666;font-style:italic">&#34;./components/BuildingDetails&#34;</span>));
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">const</span> EventSchedule = lazy(() =&gt; <span style="font-weight:bold;text-decoration:underline">import</span>(<span style="color:#666;font-style:italic">&#34;./components/EventSchedule&#34;</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> App() {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;Router&gt;
+</span></span><span style="display:flex;"><span>      &lt;Suspense fallback={&lt;LoadingSpinner /&gt;}&gt;
+</span></span><span style="display:flex;"><span>        &lt;Routes&gt;
+</span></span><span style="display:flex;"><span>          &lt;Route path=<span style="color:#666;font-style:italic">&#34;/&#34;</span> element={&lt;MapView /&gt;} /&gt;
+</span></span><span style="display:flex;"><span>          &lt;Route path=<span style="color:#666;font-style:italic">&#34;/building/:id&#34;</span> element={&lt;BuildingDetails /&gt;} /&gt;
+</span></span><span style="display:flex;"><span>          &lt;Route path=<span style="color:#666;font-style:italic">&#34;/events&#34;</span> element={&lt;EventSchedule /&gt;} /&gt;
+</span></span><span style="display:flex;"><span>        &lt;/Routes&gt;
+</span></span><span style="display:flex;"><span>      &lt;/Suspense&gt;
+</span></span><span style="display:flex;"><span>    &lt;/Router&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 class="heading" id="progressive-image-loading">
+  Progressive Image Loading
+  <a class="anchor" href="#progressive-image-loading">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> BuildingImage({ src, alt, className }) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> [imageSrc, setImageSrc] = useState(<span style="color:#666;font-style:italic">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> [imageRef, isVisible] = useIntersectionObserver();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">if</span> (isVisible) {
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// Load low-quality placeholder first
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="font-weight:bold;text-decoration:underline">const</span> lowQualityImg = <span style="font-weight:bold;text-decoration:underline">new</span> Image();
+</span></span><span style="display:flex;"><span>      lowQualityImg.src = src.replace(<span style="color:#666;font-style:italic">&#34;/full/&#34;</span>, <span style="color:#666;font-style:italic">&#34;/thumb/&#34;</span>);
+</span></span><span style="display:flex;"><span>      lowQualityImg.onload = () =&gt; setImageSrc(lowQualityImg.src);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#888;font-style:italic">// Then load high-quality version
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>      <span style="font-weight:bold;text-decoration:underline">const</span> highQualityImg = <span style="font-weight:bold;text-decoration:underline">new</span> Image();
+</span></span><span style="display:flex;"><span>      highQualityImg.src = src;
+</span></span><span style="display:flex;"><span>      highQualityImg.onload = () =&gt; setImageSrc(highQualityImg.src);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }, [isVisible, src]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;img
+</span></span><span style="display:flex;"><span>      ref={imageRef}
+</span></span><span style="display:flex;"><span>      src={imageSrc}
+</span></span><span style="display:flex;"><span>      alt={alt}
+</span></span><span style="display:flex;"><span>      className={className}
+</span></span><span style="display:flex;"><span>      style={{ filter: imageSrc.includes(<span style="color:#666;font-style:italic">&#34;/thumb/&#34;</span>) ? <span style="color:#666;font-style:italic">&#34;blur(2px)&#34;</span> : <span style="color:#666;font-style:italic">&#34;none&#34;</span> }}
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Result</strong>: Reduced initial bundle from 1.2MB to 350KB, improving load times by 65%.</p>
+<h2 class="heading" id="5-memory-leak-prevention">
+  5. Memory Leak Prevention
+  <a class="anchor" href="#5-memory-leak-prevention">#</a>
+</h2>
+<h3 class="heading" id="the-problem-growing-memory-usage">
+  The Problem: Growing Memory Usage
+  <a class="anchor" href="#the-problem-growing-memory-usage">#</a>
+</h3>
+<p>Our app accumulated memory over time due to uncleared intervals and event listeners.</p>
+<h3 class="heading" id="the-solution-proper-cleanup-patterns">
+  The Solution: Proper Cleanup Patterns
+  <a class="anchor" href="#the-solution-proper-cleanup-patterns">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> LocationTracker() {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> [location, setLocation] = useState(<span style="font-weight:bold;text-decoration:underline">null</span>);
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> watchIdRef = useRef();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">if</span> (<span style="color:#666;font-style:italic">&#34;geolocation&#34;</span> <span style="font-weight:bold;text-decoration:underline">in</span> navigator) {
+</span></span><span style="display:flex;"><span>      watchIdRef.current = navigator.geolocation.watchPosition(
+</span></span><span style="display:flex;"><span>        (position) =&gt; {
+</span></span><span style="display:flex;"><span>          setLocation({
+</span></span><span style="display:flex;"><span>            lat: position.coords.latitude,
+</span></span><span style="display:flex;"><span>            lng: position.coords.longitude,
+</span></span><span style="display:flex;"><span>          });
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        (error) =&gt; console.error(<span style="color:#666;font-style:italic">&#34;Location error:&#34;</span>, error),
+</span></span><span style="display:flex;"><span>        { enableHighAccuracy: <span style="font-weight:bold;text-decoration:underline">true</span>, maximumAge: 10000 }
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic">// Cleanup function
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>    <span style="font-weight:bold;text-decoration:underline">return</span> () =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold;text-decoration:underline">if</span> (watchIdRef.current) {
+</span></span><span style="display:flex;"><span>        navigator.geolocation.clearWatch(watchIdRef.current);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  }, []);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> location;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// Custom hook for event listeners
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> useEventListener(eventName, handler, element = <span style="font-weight:bold;font-style:italic">window</span>) {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">const</span> savedHandler = useRef();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    savedHandler.current = handler;
+</span></span><span style="display:flex;"><span>  }, [handler]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">const</span> eventListener = (event) =&gt; savedHandler.current(event);
+</span></span><span style="display:flex;"><span>    element.addEventListener(eventName, eventListener);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">return</span> () =&gt; {
+</span></span><span style="display:flex;"><span>      element.removeEventListener(eventName, eventListener);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  }, [eventName, element]);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 class="heading" id="6-performance-monitoring-and-measurement">
+  6. Performance Monitoring and Measurement
+  <a class="anchor" href="#6-performance-monitoring-and-measurement">#</a>
+</h2>
+<h3 class="heading" id="react-devtools-profiler">
+  React DevTools Profiler
+  <a class="anchor" href="#react-devtools-profiler">#</a>
+</h3>
+<p>We used React DevTools Profiler to identify performance bottlenecks:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">import</span> { Profiler } from <span style="color:#666;font-style:italic">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> onRenderCallback(
+</span></span><span style="display:flex;"><span>  id,
+</span></span><span style="display:flex;"><span>  phase,
+</span></span><span style="display:flex;"><span>  actualDuration,
+</span></span><span style="display:flex;"><span>  baseDuration,
+</span></span><span style="display:flex;"><span>  startTime,
+</span></span><span style="display:flex;"><span>  commitTime
+</span></span><span style="display:flex;"><span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#888;font-style:italic">// Log performance data
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>  console.log(<span style="color:#666;font-style:italic">&#34;Component:&#34;</span>, id);
+</span></span><span style="display:flex;"><span>  console.log(<span style="color:#666;font-style:italic">&#34;Phase:&#34;</span>, phase);
+</span></span><span style="display:flex;"><span>  console.log(<span style="color:#666;font-style:italic">&#34;Actual duration:&#34;</span>, actualDuration);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#888;font-style:italic">// Send to analytics in production
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>  <span style="font-weight:bold;text-decoration:underline">if</span> (process.env.NODE_ENV === <span style="color:#666;font-style:italic">&#34;production&#34;</span>) {
+</span></span><span style="display:flex;"><span>    analytics.track(<span style="color:#666;font-style:italic">&#34;component_render&#34;</span>, {
+</span></span><span style="display:flex;"><span>      component: id,
+</span></span><span style="display:flex;"><span>      duration: actualDuration,
+</span></span><span style="display:flex;"><span>      phase,
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> App() {
+</span></span><span style="display:flex;"><span>  <span style="font-weight:bold;text-decoration:underline">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;Profiler id=<span style="color:#666;font-style:italic">&#34;CampusNav&#34;</span> onRender={onRenderCallback}&gt;
+</span></span><span style="display:flex;"><span>      &lt;MainApp /&gt;
+</span></span><span style="display:flex;"><span>    &lt;/Profiler&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 class="heading" id="custom-performance-hooks">
+  Custom Performance Hooks
+  <a class="anchor" href="#custom-performance-hooks">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic;text-decoration:underline">function</span> usePerformanceMonitor(componentName) {
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">const</span> startTime = performance.now();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;text-decoration:underline">return</span> () =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold;text-decoration:underline">const</span> endTime = performance.now();
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold;text-decoration:underline">const</span> renderTime = endTime - startTime;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="font-weight:bold;text-decoration:underline">if</span> (renderTime &gt; 16) {
+</span></span><span style="display:flex;"><span>        <span style="color:#888;font-style:italic">// Flag renders longer than 16ms (60fps threshold)
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        console.warn(<span style="color:#666;font-style:italic">`</span><span style="color:#666;font-style:italic">${</span>componentName<span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic"> render took </span><span style="color:#666;font-style:italic">${</span>renderTime<span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic">ms`</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 class="heading" id="results-and-impact">
+  Results and Impact
+  <a class="anchor" href="#results-and-impact">#</a>
+</h2>
+<p>After implementing these optimizations:</p>
+<ul>
+<li><strong>Initial load time</strong>: Reduced from 8.2s to 2.1s</li>
+<li><strong>FPS during scrolling</strong>: Improved from 25fps to 58fps</li>
+<li><strong>Memory usage</strong>: Decreased by 60% over extended sessions</li>
+<li><strong>Bundle size</strong>: Reduced by 70% with code splitting</li>
+<li><strong>User satisfaction</strong>: Increased from 3.2/5 to 4.7/5 stars</li>
+</ul>
+<h2 class="heading" id="key-takeaways">
+  Key Takeaways
+  <a class="anchor" href="#key-takeaways">#</a>
+</h2>
+<ol>
+<li><strong>Measure first</strong>: Use React DevTools Profiler to identify actual bottlenecks</li>
+<li><strong>Optimize strategically</strong>: Focus on components that re-render frequently</li>
+<li><strong>Virtualize large lists</strong>: Don&rsquo;t render what users can&rsquo;t see</li>
+<li><strong>Debounce expensive operations</strong>: Especially network requests and complex calculations</li>
+<li><strong>Clean up properly</strong>: Always remove event listeners and clear intervals</li>
+<li><strong>Monitor in production</strong>: Track performance metrics to catch regressions</li>
+</ol>
+<h2 class="heading" id="tools-and-resources">
+  Tools and Resources
+  <a class="anchor" href="#tools-and-resources">#</a>
+</h2>
+<ul>
+<li><strong>React DevTools Profiler</strong>: Essential for identifying performance issues</li>
+<li><strong>react-window</strong>: Efficient virtualization for large lists</li>
+<li><strong>Bundle Analyzer</strong>: Visualize and optimize bundle size</li>
+<li><strong>Web Vitals</strong>: Measure real-world performance metrics</li>
+</ul>
+<hr>
+<p><em>Performance optimization is an ongoing process, not a one-time fix. Start with measurement, focus on user-impacting issues, and always test on real devices with realistic conditions.</em></p>
+<p><em>Have you faced similar performance challenges in your React apps? I&rsquo;d love to hear about your solutions and experiences. Connect with me on <a href="https://www.linkedin.com/in/kevin-wang-08836a175/">LinkedIn</a> to continue the discussion.</em></p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/posts/building-ai-interfaces/">
+                        Building Intuitive AI Interfaces: Lessons from StudyBuddy AI
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
