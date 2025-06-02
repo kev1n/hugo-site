@@ -3,7 +3,7 @@ title: Kevin Wang
 ---
 
 <div class="resume-header">
-    <img src="/images/me.jpg" alt="Kevin Wang" class="profile-image-placeholder" style="width: 100px; height: 100px; border-radius: 50%;">
+    <img src="./images/me.jpg" alt="Kevin Wang" class="profile-image-placeholder" style="width: 100px; height: 100px; border-radius: 50%;">
     <h1>Kevin Wang</h1>
     <div class="subtitle">Computer Science Student & Software Engineer</div>
     <p style="color: white; opacity: 0.9; font-size: 1.1rem; margin-top: 1rem;">
